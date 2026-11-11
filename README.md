@@ -1,32 +1,50 @@
-# React + TypeScript + Vite
+# Ivan Bochma — portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Live: **https://portfolio.radar-ib7.workers.dev** (UA / EN)
 
-Currently, two official plugins are available:
+Personal portfolio of a junior web developer from Dnipro, Ukraine: websites, Telegram bots and Python automation.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## What's inside
 
-## React Compiler
+| Part | Stack | Folder |
+|---|---|---|
+| Website | React 19, TypeScript, Vite, Three.js (react-three-fiber) | `src/` |
+| Hero | Custom GLSL shader "river" + glass pebble (MeshTransmissionMaterial) | `src/River.tsx` |
+| Bot demo on the page | React state machine that mirrors the real bot | `src/BotDemo.tsx` |
+| Contact API | Python, FastAPI, Pydantic, httpx → Telegram Bot API; validation, honeypot, rate limit | `api/` |
+| Booking bot | Python, aiogram 3 (FSM), owner notification, reminder an hour before | `bot/` |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Run
 
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Contact API:
+
+```bash
+cd api
+pip install -r requirements.txt
+set TELEGRAM_BOT_TOKEN=...
+set TELEGRAM_CHAT_ID=...
+uvicorn main:app --reload
+pytest
+```
+
+Booking bot:
+
+```bash
+cd bot
+pip install -r requirements.txt
+set BOT_TOKEN=...
+set OWNER_CHAT_ID=...
+python barber_bot.py
+pytest
+```
+
+Set `VITE_API_URL` when building the site to connect the contact form to the API.
+
+## Contact
+
+Telegram: [@iyiny](https://t.me/iyiny)
