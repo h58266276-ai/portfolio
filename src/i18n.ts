@@ -14,6 +14,9 @@ type Dict = {
   nav: { work: string; services: string; contact: string }
   hero: { title: string; lead: string; cta: string; status: string }
   workTitle: string
+  botTitle: string
+  botLead: string
+  botPoints: string[]
   workLead: string
   open: string
   projects: Project[]
@@ -51,6 +54,9 @@ export const dict: Record<Lang, Dict> = {
       status: 'Беру нові замовлення',
     },
     workTitle: 'Роботи',
+    botTitle: 'Спробуйте бота',
+    botLead: 'Бот запису в барбершоп: клієнт обирає послугу, майстра й час, а власник одразу отримує повідомлення. Натисніть кнопки в телефоні.',
+    botPoints: ['Запис без дзвінків, 24/7', 'Нагадування клієнту за годину', 'Заявка власнику одразу в Telegram'],
     workLead: 'Демо-проєкти, які можна відкрити й покликати: від кав’ярні до магазину з кошиком.',
     open: 'Відкрити сайт',
     projects: [
@@ -100,6 +106,14 @@ export const dict: Record<Lang, Dict> = {
         cta: 'Дивитись у TikTok',
         href: 'https://www.tiktok.com/@codexik',
       },
+      {
+        name: 'Бот запису',
+        kind: 'Telegram-бот для барбершопу',
+        text: 'Послуга → майстер → час → підтвердження й нагадування. Спробуйте прямо на сторінці.',
+        stack: 'Python, aiogram 3 (код у репозиторії)',
+        cta: 'Спробувати',
+        href: '#bot',
+      },
     ],
     servicesTitle: 'Послуги',
     services: [
@@ -139,6 +153,9 @@ export const dict: Record<Lang, Dict> = {
       status: 'Open to new work',
     },
     workTitle: 'Work',
+    botTitle: 'Try the bot',
+    botLead: 'A barbershop booking bot: the client picks a service, a barber and a time, and the owner gets a message instantly. Tap the buttons on the phone.',
+    botPoints: ['Booking without calls, 24/7', 'Reminder to the client an hour before', 'Booking sent to the owner in Telegram instantly'],
     workLead: 'Demo projects you can open and click through — from a coffee shop to a store with a cart.',
     open: 'Open site',
     projects: [
@@ -148,6 +165,7 @@ export const dict: Record<Lang, Dict> = {
       { name: 'Forma', kind: 'Interior studio website', text: 'Collections, process and materials with photography up front.', stack: 'HTML, CSS, JS · Cloudflare', img: '/work/forma-workshop.jpg', href: 'https://forma-workshop.radar-ib7.workers.dev' },
       { name: 'Radar', kind: 'Order finder for freelancers', text: 'A Chrome extension collects jobs from eight marketplaces, filters them by skills and drafts replies. Send from your phone with one tap.', stack: 'JS, Chrome Extension, Cloudflare Workers, D1' },
       { name: 'Video pipeline', kind: 'Automated TikTok videos', text: 'Script → voice → animation → finished video. Rendered from code, no manual editing.', stack: 'Python, HyperFrames, ElevenLabs, ffmpeg', cta: 'Watch on TikTok', href: 'https://www.tiktok.com/@codexik' },
+      { name: 'Booking bot', kind: 'Telegram bot for a barbershop', text: 'Service → barber → time → confirmation and reminder. Try it right on this page.', stack: 'Python, aiogram 3 (code in the repo)', cta: 'Try it', href: '#bot' },
     ],
     servicesTitle: 'Services',
     services: [

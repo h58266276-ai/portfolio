@@ -1,5 +1,6 @@
 ﻿import { lazy, Suspense, useEffect, useState, type FormEvent } from 'react'
 import { dict, TG, type Lang } from './i18n'
+import BotDemo from './BotDemo'
 
 const River = lazy(() => import('./River'))
 const API = (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, '')
@@ -117,7 +118,7 @@ export default function App() {
               return (
                 <li key={p.name} className={`tile tile--${i}`}>
                   {p.href ? (
-                    <a className="tile__inner" href={p.href} target="_blank" rel="noreferrer">
+                    <a className="tile__inner" href={p.href} {...(p.href.startsWith('#') ? {} : { target: '_blank', rel: 'noreferrer' })}>
                       {inner}
                     </a>
                   ) : (
@@ -127,6 +128,19 @@ export default function App() {
               )
             })}
           </ul>
+        </section>
+
+        <section id="bot" className="botsec">
+          <div className="botsec__text">
+            <h2>{t.botTitle}</h2>
+            <p>{t.botLead}</p>
+            <ul>
+              {t.botPoints.map((p) => (
+                <li key={p}>{p}</li>
+              ))}
+            </ul>
+          </div>
+          <BotDemo lang={lang} />
         </section>
 
         <section id="services" className="services">

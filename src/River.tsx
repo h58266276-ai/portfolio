@@ -1,4 +1,5 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { Environment, Float, Lightformer, MeshTransmissionMaterial } from '@react-three/drei'
 import { useMemo, useRef } from 'react'
 import * as THREE from 'three'
 
@@ -92,25 +93,100 @@ function Water({ still }: { still: boolean }) {
   })
 
   return (
-    <mesh>
+    <mesh renderOrder={-1} frustumCulled={false}>
       <planeGeometry args={[2, 2]} />
-      <shaderMaterial ref={mat} vertexShader={vertex} fragmentShader={fragment} uniforms={uniforms} />
+      <shaderMaterial
+        ref={mat}
+        vertexShader={vertex}
+        fragmentShader={fragment}
+        uniforms={uniforms}
+        depthWrite={false}
+        depthTest={false}
+      />
     </mesh>
+  )
+}
+
+// Скляний «річковий камінь», що пливе над водою й заломлює її.
+function Pebble({ still, small }: { still: boolean; small: boolean }) {
+  const ref = useRef<THREE.Mesh>(null)
+  const geo = useMemo(() => {
+    const g = new THREE.IcosahedronGeometry(1, 48)
+    // легка неоднорідність, щоб камінь не був ідеальною кулею
+    const pos = g.attributes.position as THREE.BufferAttribute
+    const v = new THREE.Vector3()
+    for (let i = 0; i < pos.count; i++) {
+      v.fromBufferAttribute(pos, i)
+      const n = 1 + 0.06 * Math.sin(v.x * 3.1 + v.y * 2.3) + 0.04 * Math.cos(v.z * 4.2 - v.x * 1.7)
+      v.multiplyScalar(n)
+      pos.setXYZ(i, v.x * 1.35, v.y * 0.82, v.z * 1.0)
+    }
+    g.computeVertexNormals()
+    return g
+  }, [])
+
+  const { viewport } = useThree()
+  // місце каменя — праворуч від заголовка; на телефоні — вгорі праворуч
+  const baseX = small ? viewport.width * 0.24 : viewport.width * 0.37
+  const baseY = small ? viewport.height * 0.32 : viewport.height * 0.2
+  const scale = small ? viewport.width * 0.12 : Math.min(viewport.width * 0.06, 0.62)
+
+  useFrame((state, delta) => {
+    const m = ref.current
+    if (!m) return
+    if (!still) {
+      m.rotation.y += delta * 0.12
+      m.rotation.z = Math.sin(state.clock.elapsedTime * 0.4) * 0.15
+    }
+    // камінь трохи «тягнеться» за курсором
+    m.rotation.x = THREE.MathUtils.lerp(m.rotation.x, -state.pointer.y * 0.35, 0.05)
+    m.position.x = THREE.MathUtils.lerp(m.position.x, baseX + state.pointer.x * 0.2, 0.05)
+  })
+
+  return (
+    <Float speed={still ? 0 : 1.2} rotationIntensity={0.2} floatIntensity={still ? 0 : 0.5}>
+      <mesh ref={ref} geometry={geo} position={[baseX, baseY, 0]} scale={scale}>
+        <MeshTransmissionMaterial
+          samples={small ? 4 : 8}
+          resolution={small ? 256 : 768}
+          transmission={1}
+          thickness={1.6}
+          roughness={0}
+          ior={1.5}
+          chromaticAberration={0.7}
+          anisotropicBlur={0}
+          distortion={0.25}
+          distortionScale={0.4}
+          temporalDistortion={still ? 0 : 0.06}
+          clearcoat={1}
+          clearcoatRoughness={0}
+          color="#ffffff"
+        />
+      </mesh>
+    </Float>
   )
 }
 
 export default function River() {
   const still =
     typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const small = typeof window !== 'undefined' && window.innerWidth < 860
   return (
     <Canvas
       className="river"
       dpr={[1, 1.5]}
-      gl={{ antialias: false, powerPreference: 'high-performance' }}
+      camera={{ position: [0, 0, 5], fov: 40 }}
+      gl={{ antialias: true, powerPreference: 'high-performance' }}
       eventSource={typeof document !== 'undefined' ? document.body : undefined}
       aria-hidden="true"
     >
       <Water still={still} />
+      <Pebble still={still} small={small} />
+      <Environment resolution={128}>
+        <Lightformer intensity={2.2} position={[0, 4, -3]} scale={[10, 2, 1]} />
+        <Lightformer intensity={1.2} position={[-4, 0, 2]} rotation-y={Math.PI / 2} scale={[6, 2, 1]} color="#a3d9e8" />
+        <Lightformer intensity={1} position={[4, -2, 2]} rotation-y={-Math.PI / 2} scale={[6, 2, 1]} color="#f4b6a2" />
+      </Environment>
     </Canvas>
   )
 }

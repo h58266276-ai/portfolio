@@ -393,6 +393,229 @@ a.tile__inner:hover .shot img {
   text-decoration-color: var(--lilac);
 }
 
+.tile--6 {
+  grid-column: 1 / -1;
+}
+
+.tile--6 .shot {
+  aspect-ratio: 16 / 5;
+}
+
+.tile--6 .shot--type {
+  background: linear-gradient(120deg, var(--ice), var(--lilac) 70%);
+  color: var(--ink);
+}
+
+/* демо бота */
+.botsec {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: center;
+  scroll-margin-top: 4rem;
+}
+
+.botsec__text p {
+  margin-top: 1.2rem;
+  max-width: 46ch;
+  color: var(--ink-soft);
+}
+
+.botsec__text ul {
+  margin: 1.6rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.botsec__text li {
+  padding-left: 1.6rem;
+  position: relative;
+  font-weight: 600;
+}
+
+.botsec__text li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: var(--ice);
+  box-shadow: inset 0 0 0 2px var(--lilac);
+}
+
+.bot {
+  display: grid;
+  gap: 1rem;
+}
+
+.phone {
+  background: #fff;
+  border-radius: 34px;
+  border: 10px solid var(--ink);
+  box-shadow: 0 40px 80px -40px rgba(29, 27, 59, 0.55);
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto 380px auto;
+}
+
+.phone__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.phone__bar strong {
+  display: block;
+  font-size: 0.95rem;
+}
+
+.phone__bar small {
+  color: var(--lilac-deep);
+  font-size: 0.78rem;
+}
+
+.ava {
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--display);
+  font-weight: 700;
+  color: var(--paper);
+  background: #6b1f2a;
+}
+
+.chat {
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: linear-gradient(180deg, #eef1fb, #e3e8f6);
+}
+
+.bubble {
+  max-width: 82%;
+  padding: 0.6rem 0.85rem;
+  border-radius: 16px;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  white-space: pre-line;
+  animation: pop 0.25s ease-out both;
+}
+
+.bubble--bot {
+  align-self: flex-start;
+  background: #fff;
+  border-bottom-left-radius: 4px;
+}
+
+.bubble--me {
+  align-self: flex-end;
+  background: var(--lilac-deep);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.bubble--typing {
+  display: flex;
+  gap: 4px;
+}
+
+.bubble--typing span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ink-soft);
+  animation: blink 1s infinite;
+}
+
+.bubble--typing span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.bubble--typing span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  padding: 0.75rem;
+  border-top: 1px solid var(--line);
+  background: #fff;
+}
+
+.keys button {
+  flex: 1 1 auto;
+  font: 600 0.88rem var(--body);
+  color: var(--lilac-deep);
+  background: #f1efff;
+  border: 0;
+  border-radius: 10px;
+  padding: 0.65rem 0.8rem;
+  cursor: pointer;
+}
+
+.keys button:hover:not(:disabled) {
+  background: #e4dfff;
+}
+
+.keys button:disabled {
+  opacity: 0.5;
+}
+
+.admin {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.8rem 1rem;
+  border-radius: 14px;
+  background: var(--paper);
+  border: 1px dashed var(--line);
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.admin small {
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+}
+
+.admin p {
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.admin--on {
+  border: 1px solid #2fb380;
+  background: #e9f7f1;
+}
+
+.bot__note {
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+}
+
 /* послуги */
 .services h2 {
   margin-bottom: 2.5rem;
@@ -575,8 +798,13 @@ a.tile__inner:hover .shot img {
   }
 
   .section-head,
-  .contact {
+  .contact,
+  .botsec {
     grid-template-columns: 1fr;
+  }
+
+  .tile--6 .shot {
+    aspect-ratio: 16 / 9;
   }
 
   .grid {
